@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
+<body>
+    <div class="maintitle"><h1>My Media Database</h1></div>
+      <div class="main_page_container" id="main_page_container">
+       <div class="subheaders" id="addNew"><h2 id="newItemHeader">Add New      Media Item</h2></div>
+
+     <div class="subheaders" id="view_contacts" ><h2 id="savedItems">View Saved Items</h2></div>
+    </div>
+
+    <!-- div to contain form for new contact entry -->
+
+    <div class="new_contact_container" id="new_contact_container">
+
+        <div class="newItem" id="newItemDiv">
+            <form id="newContact" action="">
+              <div id="l1">
+                <label for="contactName">Name</label>
+              </div>
+              <div id="f1">
+                <input type="text" id="contactName" name="name" value="">
+              </div>
+              <div id="l2">
+                <label for="mobile">Mobile No:</label>
+              </div>
+              <div id="f2">
+                <input type="tel" pattern="[0-9]*" id="mobile" name="mobile" value="">
+              </div>
+              <div id="l3">
+                <label for="landline">Landline No:</label>
+              </div>
+              <div id="f3">
+                <input type="tel" pattern="[0-9]*" id="landline" name="landline" value="">
+              </div>
+              <div id="l4">
+                <label for="email1">Email 1:</label>
+              </div>
+              <div id="f4">
+                <input type="email" id="email1" name="email1" value="">
+              </div>
+              <div id="l5">
+                <label for="email2">Email 2:</label>
+              </div>
+              <div id="f5">
+                <input type="email" id="email2" name="email2" value="">
+              </div>
+              <div id="l6">
+                <label for="linkedin">Linkedin:</label>
+              </div>
+              <div id="f6">
+                <input type="url" id="linkedin" name="linkedin" value="">
+              </div>
+              <div id="l7">
+                <label for="facebook">Facebook:</label>
+              </div>
+              <div id="f7">
+                <input type="url" id="facebook" name="facebook" value="">
+              </div>
+              <div id="l8">
+                <label for="birthday">Birthday</label>
+              </div>
+              <div id="f8">
+                <input type="date" id="birthday" name="birthday" value="">
+              </div>
+              <div id="fbtn1">
+                <h2>Return</h2>
+                <!-- <button type="button" id="bt1">Cancel</button> -->
+              </div>
+              <div id="fbtn2">
+                <h2>Save</h2>
+                <!-- <button type="button" id="bt2">Save</button> -->
+              </div>
+
+              <!--
+              <div id="l1">
+                <label for="contactName">Name</label>
+              </div>
+              <div id="f1">
+                <input type="text" id="contactName" name="name" value="">
+              <div>
+                                                                        
+              <label for="personal_email">Personal Email</label>
+              <input type="email" id="personal_email" name="p_email" value="">
+              -->
+    
+           </form>
+             
+                        
+          </div>        
+
+    </div>
+
+    <!--  div to contain view of contacts book  -->
+    
+    <div class="view_contacts_container" id="view_contacts_container">
+       
+
+        <p>to be dynamically created</p>
+
+
+    </div>
+
+
+    <script src="./jscript/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,262 @@
+*{
+    box-sizing: border-box;
+    margin:0;
+    padding:0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+html{
+    font-size: 0.55rem;
+    min-height:100vh;
+    /*background-image: url("../images/pexels-expect-best-351265.jpg");*/
+    background-color: gray;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+body{
+    height: 100%;
+}
+
+.main_page_container{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 5rem 0 0 0;
+    height:100%;
+    
+}
+
+.maintitle{
+    width:70%;
+    font-weight: bold;
+    background-color: grey;
+    padding:1rem;
+    border: 1px solid white;
+    border-radius:10px;
+    text-align: center;
+    margin:0.5rem auto;
+}
+
+.subheaders{
+    width:70%;
+    font-weight: bold;
+    background-color: grey;
+    padding:1rem;
+    border: 1px solid white;
+    border-radius:10px;
+    text-align: center;
+    margin: 0.5rem auto;
+
+}
+
+.new_contact_container{
+    display:none;
+}
+
+.view_contacts_container{
+
+    display:none;
+}
+
+.newItem{
+    width:70%;
+    font-weight: bold;
+    background-color: grey;
+    padding:1rem;
+    border: 1px solid white;
+    border-radius:10px;
+    text-align: center;
+    margin: 15px auto;
+    /*display:none; */  
+}
+
+
+/* grid set up for main form */
+
+#newContact{
+    display:grid;
+    width:100%;
+    grid-template-areas: "a b b b"
+                        "c d d d"
+                        "e f f f"
+                        "g h h h"
+                        "i j j j"
+                        "k l l l"
+                        "m n n n"
+                        "o p p p"
+                        "q q r r";
+}
+
+#newinput>input{
+    width:100%;
+}
+
+#l1{
+    grid-area: a;
+}
+
+#f1{
+    grid-area: b;
+}
+
+#l2{
+    grid-area: c;
+}
+
+#f2{
+    grid-area: d;
+}
+
+#l3{
+    grid-area: e;
+}
+
+#f3{
+    grid-area: f;
+}
+
+#l4{
+    grid-area: g;
+}
+
+#f4{
+    grid-area: h;
+}
+
+#l5{
+    grid-area: i;
+}
+
+#f5{
+    grid-area: j;
+}
+
+#l6{
+    grid-area: k;
+}
+
+#f6{
+    grid-area: l;
+}
+
+#l7{
+    grid-area: m;
+}
+
+#f7{
+    grid-area: n;
+}
+
+#l8{
+    grid-area: o;
+}
+
+#f8{
+    grid-area: p;
+}
+
+#fbtn1{
+    grid-area: q;
+    text-align: center;
+    background-color: greenyellow;
+    border: 1px solid black;
+    border-radius: 3px;
+}
+
+#fbtn2{
+    grid-area: r;
+    text-align: center;
+    background-color: powderblue;
+    border: 1px solid black;
+    border-radius: 3px;
+}
+
+
+input{
+    font-size: 1rem;
+    width:15rem;
+    padding:0.5rem;
+    border: 1px solid black;
+    border-radius:3px;
+    margin: 0 0 3px 1rem;
+}
+
+label{
+    padding: 0.5rem 0;
+    margin: 0.5rem 0;
+}
+
+form>div{
+    text-align: center;
+    display:flex;
+    justify-content: center;
+}
+/*
+#newItemDiv{
+    display:none;
+}
+*/
+
+.hide_page1{
+    display:none;
+ }
+ 
+.show_page1{
+     display:block;
+ }
+
+.hide_page2{
+    display:none;
+ }
+ 
+.show_page2{
+     display:block;
+ }
+
+ 
+.hide_page3{
+    display:none;
+ }
+ 
+.show_page3{
+     display:block;
+ }
+
+.hideMainMenu{
+   display:none;
+}
+
+.showItemdiv{
+    display:block;
+}
+
+
+
+
+
+/* test of variable font media queries */
+
+@media screen and (min-width:360px){
+
+    html{
+        font-size: 0.75rem;
+    }
+}
+
+
+@media screen and (min-width: 590px){
+
+    html{
+        font-size: 1rem;
+    }
+}
+
+
+@media screen and (min-width: 900px){
+
+    html{
+        font-size: 1.25rem;
+    }
+}
