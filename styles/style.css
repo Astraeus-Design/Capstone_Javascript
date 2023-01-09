@@ -58,6 +58,8 @@ body{
 .view_contacts_container{
 
     display:none;
+    height:70vh;
+    overflow:auto;
 }
 
 .newItem{
@@ -72,6 +74,18 @@ body{
     /*display:none; */  
 }
 
+.contactDiv{
+    height:2.5rem;
+    font-size:1.5rem;
+    background-color: lightgreen;
+    border: 1px solid black;
+    border-radius: 3px;
+    width:70%;
+    text-align: center;
+    vertical-align: middle;
+    margin: 1.5px auto;
+    padding:0.25rem;
+}
 
 /* grid set up for main form */
 
