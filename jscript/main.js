@@ -14,7 +14,7 @@
 
 /* special attention to myDatabase which is stored in local storage of the browser and has to be accessed via a stringify method  */
 
-let myDatabase;  /* load as empty array if not currently in existence */
+let myDatabase=[];  /* load as empty array if not currently in existence */
 myDatabase = JSON.parse(localStorage.getItem("myDatabase") || "[]");
 
 /* line to be used when storing updates to myDatabase
@@ -23,6 +23,8 @@ localStorage.setItem("myDatabase", JSON.stringify(myDatabase));  */
 let itemNumber;
 let addClickCount=0;
 let dataObj=Object.create(Object.prototype);
+let nameValue="";
+let divID="";
 
 
 
@@ -61,12 +63,13 @@ fbtn2Ref.addEventListener("click",()=>{
     /* now fill data object and push to local array */
 
     let formObj=new FormData(mainForm);
-
-    myDatabase.push(Array.from(formObj));
+    nameValue=formObj.get('name');
+    console.log(nameValue);
+    myDatabase.push([nameValue,Array.from(formObj)]);
     /* update local storage copy */
     localStorage.setItem("myDatabase", JSON.stringify(myDatabase)); 
 
-    savedItemsRef.textContent=savedItemsRef.textContent+'('+`${myDatabase.length}`+')';
+    savedItemsRef.textContent=`View Contacts(${myDatabase.length})`;
  /*   console.log(mainForm);
     console.log(...formObj);*/
     let v=myDatabase[0];
@@ -98,6 +101,48 @@ fbtn1Ref.addEventListener('click',()=>{
 view_Contactsdiv.addEventListener('click',()=>{
     main_pageRef.classList.add("hide_page1");
     view_contacts_pageRef.classList.add("show_page3");
+
+    /* load main viewing div with generated html and add event listeners */
+
+    divString=``;
+
+    myDatabase.forEach((element,index) => {
+           divID="A"+index;
+           nameValue=element[0];
+           console.log(divID,nameValue);
+
+          /* create a template string for use in dynamic html creation */
+
+ /*          htmlString=`<div class="contactDiv" id="${divID}"><h3 class="nameString">${nameValue}</h3></div>`;*/
+           htmlString=`<div class="contactDiv" id="${divID}"><h3 id="A${divID}">${nameValue}</h3></div>`;
+
+           console.log(htmlString);
+           divString=divString+htmlString;
+    });
+    
+    view_contacts_pageRef.innerHTML="";
+    view_contacts_pageRef.insertAdjacentHTML("afterbegin",divString);
+
+    /* now iterate through all create and inserted divs and attach listener */
+
+    for ( i=0; i<(myDatabase.length);i++){
+
+        divID="#A"+i;
+        tempRef=document.querySelector(divID);
+        console.log(tempRef);
+        str=divID+" clicked";
+        tempRef.addEventListener('click',(e)=>{
+            alert(e.target.getAttribute('id')+str)});
+
+    }
+    /* add a listener to parent div to catch all click events */
+
+    /*view_contacts_pageRef.addEventListener('click',(e)=>{
+        console.log(e.target.getAttribute('id'));
+        console.log(e);
+    });*/
+    
+    
 })
 
 newItemRef.addEventListener("click",(event)=>{
