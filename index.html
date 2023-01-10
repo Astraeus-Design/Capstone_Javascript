@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="./styles/style.css">
 </head>
 <body>
-    <div class="maintitle"><h1>My Media Database</h1></div>
+    <div class="maintitle" id="maintitle"><h1 id="titleHdr">My Desktop Contacts</h1></div>
       <div class="main_page_container" id="main_page_container">
-       <div class="subheaders" id="addNew"><h2 id="newItemHeader">Add New      Media Item</h2></div>
+       <div class="subheaders" id="addNew"><h2 id="newItemHeader">Add New      Contact</h2></div>
 
-     <div class="subheaders" id="view_contacts" ><h2 id="savedItems">View Saved Items</h2></div>
+     <div class="subheaders" id="view_contacts" ><h2 id="savedContactsHdr">View Contacts</h2></div>
     </div>
 
     <!-- div to contain form for new contact entry -->
@@ -100,11 +100,15 @@
     <!--  div to contain view of contacts book  -->
     
     <div class="view_contacts_container" id="view_contacts_container">
-       
+      <div class="contact_divs_container" id="contact_divs_container">
+         
+        <!--  populated by dynamic content  -->
+      
+      </div>
 
         
-
-
+      <div class="deleteDiv" id="deleteDiv"><h3 id="deleteHeader">View Mode</h3></div>
+     
     </div>
 
 

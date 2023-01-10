@@ -25,7 +25,10 @@ let addClickCount=0;
 let dataObj=Object.create(Object.prototype);
 let nameValue="";
 let divID="";
-
+let arrivingFromMain=false;    /* used to determine operation mode of screen */
+let arrivingFromContacts=false; /* as per variable above */
+let viewMode=true;              /* used to determine view or delete mode */
+let pageID="main";             /* used to allow main header as back button */
 
 
 /* Define constants referencing DOM nodes */
@@ -33,8 +36,13 @@ let divID="";
 const main_pageRef=document.querySelector("#main_page_container");
 const new_contact_pageRef=document.querySelector("#new_contact_container");
 const view_contacts_pageRef=document.querySelector("#view_contacts_container");
+const contacts_dynamicDiv=document.querySelector("#contact_divs_container");
+const titleHdrRef=document.querySelector("#maintitle");
+const viewMode_divRef=document.querySelector("#deletediv");
+
 const view_Contactsdiv=document.querySelector("#view_contacts");
-const savedItemsRef=document.querySelector("#savedItems");
+const savedContactsHdr=document.querySelector("#savedContactsHdr");
+/*const savedItemsRef=document.querySelector("#savedItems");*/
 const newItemRef=document.querySelector("#addNew");
 const addItemRef=document.querySelector("#newItemDiv");
 const newItemHeaderRef=document.querySelector("#newItemHeader");
@@ -43,18 +51,156 @@ const fbtn1Ref=document.querySelector("#fbtn1");
 const mainForm=document.querySelector("#newContact");
 
 
-/*
-const dref=document.querySelector("#btn");
-const bref=document.querySelector(".b");
-const ddref=document.querySelector("#view_contacts_container");
 
-bref.addEventListener("click",()=>{alert("it works")});
-let h=dref.innerHTML;
-ddref.insertAdjacentHTML("afterbegin",h);
-console.log(ddref.innerHTML);
-console.log(addItemRef);*/
 
-/* event listener for Save button of contact addition screen */
+
+/****************************************************************************/
+/*                                                                          */
+/*  Event listener for main header div to act as back button                */
+/*                                                                          */
+/****************************************************************************/
+
+
+titleHdrRef.addEventListener('click',()=>{
+
+  if (pageID=="view"){
+       console.log(new_contact_pageRef.classlist,main_pageRef.classlist);
+ 
+       new_contact_pageRef.classList.remove("show_page2");
+       main_pageRef.classList.remove("hide_page1");
+       pageID="main";
+  }
+  else if (pageID=="contact"){
+      view_contacts_pageRef.classList.remove("show_page3");
+      main_pageRef.classList.remove("hide_page1");
+      pageID="main";
+
+  };
+
+
+});
+
+
+/****************************************************************************/
+/*                                                                          */
+/*        Event listener for main screen new contact                        */
+/*                                                                          */
+/****************************************************************************/
+
+
+/* add event listener for main screen div click "add new contact" */
+
+
+newItemRef.addEventListener("click",(event)=>{
+    console.log(event.target.getAttribute('id'));
+    main_pageRef.classList.add("hide_page1");
+    console.log(main_pageRef.classList);
+    console.log(new_contact_pageRef);    
+    new_contact_pageRef.classList.add("show_page2");
+    addClickCount++;
+    arrivingFromMain=true;
+    pageID="view";
+/*if (addClickCount & 0x01){newItemHeaderRef.textContent="Close Item Entry Panel"}
+else
+{ newItemHeaderRef.textContent="Add New Media Item"}*/
+
+});
+
+
+/* add event listener for main page "View contacts"         */
+/* eventlistener for div click view contacts of main screen */
+
+
+
+/****************************************************************************/
+/*                                                                          */
+/*          Event listener for main screen view contacts                    */
+/*                                                                          */
+/****************************************************************************/
+
+view_Contactsdiv.addEventListener('click',()=>{
+    main_pageRef.classList.add("hide_page1");
+    view_contacts_pageRef.classList.add("show_page3");
+    pageID="contact";
+    arrivingFromMain=false;
+    arrivingFromContacts=true;
+
+   /* load main viewing div with generated html and add event listeners */
+
+   divString=``;
+
+   myDatabase.forEach((element,index) => {
+           divID="A"+index;
+           nameValue=element[0];
+           console.log(divID,nameValue);
+
+          /* create a template string for use in dynamic html creation */
+
+          /*          htmlString=`<div class="contactDiv" id="${divID}"><h3 class="nameString">${nameValue}</h3></div>`;*/
+           htmlString=`<div class="contactDiv" id="${divID}"><h3 id="A${divID}">${nameValue}</h3></div>`;
+
+           console.log(htmlString);
+           divString=divString+htmlString;
+       });
+    
+    contacts_dynamicDiv.innerHTML="";
+    contacts_dynamicDiv.insertAdjacentHTML("afterbegin",divString);
+
+    /* now iterate through all create and inserted divs and attach listener */
+
+   /* for ( i=0; i<(myDatabase.length);i++){
+
+        divID="#A"+i;
+        tempRef=document.querySelector(divID);
+        console.log(tempRef);
+        str=divID+" clicked";
+        tempRef.addEventListener('click',(e)=>{
+            alert(e.target.getAttribute('id')+str)
+        
+        
+        
+        
+        
+        
+        
+        });
+
+    }*/
+    /* add a listener to parent div to catch all click events */
+
+    view_contacts_pageRef.addEventListener('click',(e)=>{
+
+        targetID=e.target.getAttribute('id');
+        targetID=targetID.replace(/A/g,'');
+        
+        /* set values for form ready for viewing and editing */
+
+        mainForm.elements['contactName'].value=myDatabase[targetID][1][0][1];
+        mainForm.elements['mobile'].value=myDatabase[targetID][1][1][1];
+        mainForm.elements['landline'].value=myDatabase[targetID][1][2][1];
+        mainForm.elements['email1'].value=myDatabase[targetID][1][3][1];
+        mainForm.elements['email2'].value=myDatabase[targetID][1][4][1];
+        mainForm.elements['linkedin'].value=myDatabase[targetID][1][5][1];
+        mainForm.elements['facebook'].value=myDatabase[targetID][1][6][1];
+        mainForm.elements['birthday'].value=myDatabase[targetID][1][7][1];
+        
+        console.log(view_contacts_pageRef.classList,new_contact_pageRef.classList);
+        view_contacts_pageRef.classList.remove("show_page3");
+        new_contact_pageRef.classList.add("show_page2");
+        arrivingFromContacts=true;
+        pageID="view";
+        /*console.log(myDatabase[targetID][1]);*/
+    });
+    
+    
+});
+
+
+/****************************************************************************/
+/*                                                                          */
+/*        Event listener for Save button of edit                            */
+/*                                                                          */
+/****************************************************************************/
 
 fbtn2Ref.addEventListener("click",()=>{
 
@@ -69,7 +215,7 @@ fbtn2Ref.addEventListener("click",()=>{
     /* update local storage copy */
     localStorage.setItem("myDatabase", JSON.stringify(myDatabase)); 
 
-    savedItemsRef.textContent=`View Contacts(${myDatabase.length})`;
+    savedContactsHdr.textContent=`View Contacts(${myDatabase.length})`;
  /*   console.log(mainForm);
     console.log(...formObj);*/
     let v=myDatabase[0];
@@ -83,83 +229,64 @@ fbtn2Ref.addEventListener("click",()=>{
     
 
     
-})
+});
 
 /* eventlistener for Return button of save contact screen  */
 
+/****************************************************************************/
+/*                                                                          */
+/*        Event listener for Return button of edit                          */
+/*                                                                          */
+/****************************************************************************/
+
 fbtn1Ref.addEventListener('click',()=>{
- /*  new_contact_pageRef.classList.add('hidemainmenu');
-   main_pageRef.classList.remove('hidemainmenu');*/
- /*  addItemRef.classList.add("hideMainMenu");
-   main_pageRef.classList.remove("showItemdiv");*/
+  if(arrivingFromMain){
    new_contact_pageRef.classList.remove("show_page2");
    main_pageRef.classList.remove("hide_page1");
-})
-
-/* eventlistener for div click view contacts of main screen */
-
-view_Contactsdiv.addEventListener('click',()=>{
-    main_pageRef.classList.add("hide_page1");
+   arrivingFromMain=false;
+   pageID="main";
+  }
+  else if(arrivingFromContacts){
+    new_contact_pageRef.classList.remove("show_page2");
     view_contacts_pageRef.classList.add("show_page3");
-
-    /* load main viewing div with generated html and add event listeners */
-
-    divString=``;
-
-    myDatabase.forEach((element,index) => {
-           divID="A"+index;
-           nameValue=element[0];
-           console.log(divID,nameValue);
-
-          /* create a template string for use in dynamic html creation */
-
- /*          htmlString=`<div class="contactDiv" id="${divID}"><h3 class="nameString">${nameValue}</h3></div>`;*/
-           htmlString=`<div class="contactDiv" id="${divID}"><h3 id="A${divID}">${nameValue}</h3></div>`;
-
-           console.log(htmlString);
-           divString=divString+htmlString;
-    });
-    
-    view_contacts_pageRef.innerHTML="";
-    view_contacts_pageRef.insertAdjacentHTML("afterbegin",divString);
-
-    /* now iterate through all create and inserted divs and attach listener */
-
-    for ( i=0; i<(myDatabase.length);i++){
-
-        divID="#A"+i;
-        tempRef=document.querySelector(divID);
-        console.log(tempRef);
-        str=divID+" clicked";
-        tempRef.addEventListener('click',(e)=>{
-            alert(e.target.getAttribute('id')+str)});
-
-    }
-    /* add a listener to parent div to catch all click events */
-
-    /*view_contacts_pageRef.addEventListener('click',(e)=>{
-        console.log(e.target.getAttribute('id'));
-        console.log(e);
-    });*/
-    
-    
-})
-
-newItemRef.addEventListener("click",(event)=>{
-    console.log(event.target.getAttribute('id'));
-    main_pageRef.classList.add("hide_page1");
-    console.log(main_pageRef.classList);
-    console.log(new_contact_pageRef);    
-    new_contact_pageRef.classList.add("show_page2");
-    console.log(new_contact_pageRef.classlist);
-    addClickCount++;
-/*if (addClickCount & 0x01){newItemHeaderRef.textContent="Close Item Entry Panel"}
-else
-{ newItemHeaderRef.textContent="Add New Media Item"}*/
-
+    arrivingFromContacts=false;
+    pageID="contact";
+  };
 });
 
-/*
-console.log("hello world");
-console.log(savedItemsRef.innerHTML);
-savedItemsRef.textContent=savedItemsRef.textContent+'('+`${myDatabase.length}`+')';*/
+
+
+/****************************************************************************/
+/*                                                                          */
+/*        Event listener for contact screen view/delete mode div            */
+/*                                                                          */
+/****************************************************************************/
+
+viewMode_divRef.addEventListener('click',()=>{
+
+/* if clicked toggle state between view and delete mode setting flags */
+
+  if (viewMode){
+       /*set style of button via toggle of class */
+
+       viewMode_divRef.classList.toggle("deleteToggle");
+       viewMode_divRef.textContent="Delete Mode";
+       viewMode=false;   /* indicates now in delete mode */
+  }
+  else{
+
+       /*set style of button via toggle of class */
+
+       viewMode_divRef.classList.toggle("deleteToggle");
+       viewMode_divRef.textContent="View Mode";
+       viewMode=true;   /* indicates now in delete mode */
+
+  };
+
+  });
+
+
+/*   on entry to script update label to indicate number of contacts */
+
+savedContactsHdr.textContent=`View Contacts(${myDatabase.length})`;
+
