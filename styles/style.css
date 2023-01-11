@@ -2,23 +2,23 @@
     box-sizing: border-box;
     margin:0;
     padding:0;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 html{
     
   /*  font-size: calc((100vw/320)*4);*/
-    font-size: calc((100vh/320)*4);
-   /* font-size: 0.55rem;*/
+    /*font-size: calc((100vh/320)*4);*/
+    font-size: 0.55rem;
     min-height:100vh;
-    /*background-image: url("../images/pexels-expect-best-351265.jpg");*/
+    background-image: url("../images/coffee-cup-laptop-eyeglasses-spiral-notepad-leaves-white-desk_23-2148178627.webp");
     background-color: gray;
     background-repeat: no-repeat;
     background-size: 100% 100%;
 }
 
 body{
-    height: 100%;
+   /* height: 100%;*/
     display:flex;
     flex-direction:column;
     justify-content: space-between;
@@ -36,25 +36,41 @@ body{
 
 .maintitle{
     width:70%;
+    max-width:900px;
+    font-size: larger;
     font-weight: bold;
-    background-color: grey;
+    background-color: #e9c9e4;
     padding:1rem;
-    border: 1px solid white;
+    /*border: 1px solid white;*/
     border-radius:10px;
     text-align: center;
-    margin:0.5rem auto;
+    margin:3rem auto 1.5rem auto;
+    opacity:90%;
+    box-shadow: inset 0px 0px 26px -4px rgba(0,0,0,0.58);
+}
+
+.maintitle:hover{
+    box-shadow: inset 0px 0px 26px -4px rgba(0,0,0,0.95); 
+    
 }
 
 .subheaders{
     width:70%;
+    max-width: 750px;
     font-weight: bold;
-    background-color: grey;
+    background-color: #e9c9e4;
     padding:1rem;
-    border: 1px solid white;
+    /*border: 1px solid white;*/
     border-radius:10px;
     text-align: center;
     margin: 0.5rem auto;
+    box-shadow: inset 0px 0px 26px -4px rgba(0,0,0,0.58);
 
+}
+
+.subheaders:hover{
+    box-shadow: inset 0px 0px 26px -4px rgba(0,0,0,0.95); 
+     
 }
 
 .new_contact_container{
@@ -64,17 +80,19 @@ body{
 .view_contacts_container{
 
     display:none;
-    height:70vh;
-   /* overflow:auto;*/
+    max-height: 25%;/*70vh;*/
+    overflow:auto;
 }
 
 .contact_divs_container{
-
+    max-height:350px;
     overflow:auto;
 }
 
 .newItem{
     width:70%;
+   /* max-height:500px;
+    overflow:auto;*/
     font-weight: bold;
     background-color: grey;
     padding:1rem;
@@ -89,21 +107,35 @@ body{
 .contactDiv, .deleteDiv{
     height:2.5rem;
     font-size:1.5rem;
-    background-color: lightgreen;
-    border: 1px solid black;
+    background-color: #e4feeb;
+    /*border: 1px solid black;*/
     border-radius: 3px;
     width:55%;
     text-align: center;
     vertical-align: middle;
     margin: 0.25rem auto;
     padding:0.25rem;
+    box-shadow: inset 0px 0px 26px -4px rgba(0,0,0,0.58);
+    opacity:90%;
+}
+
+.contactDiv:hover{
+    box-shadow: inset 0px 0px 26px -4px rgba(0,0,0,0.95); 
 }
 
 .deleteDiv{
+    width:70%;
+    max-width: 900px;
     background-color: gainsboro;
     margin-top: 10px;
     margin-bottom:10px;
     width:70%; /*overide previous width */
+    
+}
+
+.deleteDiv:hover{
+    box-shadow: inset 0px 0px 26px -4px rgba(0,0,0,0.95); 
+
 }
 
 .deleteToggle{
@@ -278,7 +310,7 @@ form>div{
 
 /* test of variable font media queries */
 
-@media screen and (min-width:360px){
+@media screen and (min-width:392px){
 
     html{
         font-size: 0.7rem;
@@ -298,5 +330,19 @@ form>div{
 
     html{
         font-size: 1.1rem;
+    }
+
+}
+
+
+@media screen and (min-width: 1200px){
+
+    #newContact{
+
+        grid-template-areas: "a b i j"
+                             "c d k l"
+                             "e f m n"
+                             "g h o p"
+                             "q q r r";
     }
 }

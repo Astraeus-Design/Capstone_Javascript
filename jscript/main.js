@@ -229,7 +229,8 @@ function contactDivClick(e){
                regenerate html for contacts page */
 
             myDatabase.splice(targetID,1);
-            localStorage.setItem("myDatabase", JSON.stringify(myDatabase)); 
+            localStorage.setItem("myDatabase", JSON.stringify(myDatabase));
+
             savedContactsHdr.textContent=`View Contacts(${myDatabase.length})`;
             regenHTML();
         
@@ -237,7 +238,34 @@ function contactDivClick(e){
          };
       };
     };
-  }
+  };
+
+
+
+/****************************************************************************/
+/*                                                                          */
+/*     Function to sort database array into alphabetical order              */
+/*                                                                          */
+/****************************************************************************/
+
+
+function alphaSort(){ 
+
+   myDatabase.sort((a,b)=>{
+     if (a[0]>b[0]){
+
+       return(1);
+     }
+     else if (a[0]<b[0]){
+       return(-1);
+     }
+
+     return 0;
+  });
+
+};
+
+
 
 /****************************************************************************/
 /*                                                                          */
@@ -381,12 +409,17 @@ fbtn2Ref.addEventListener('click',(e)=>{
     if (arrivingFromContacts){
         /* overwrite current array data with any edited values */
         copyArrayData('toDatabase',refIndex); 
+        alphaSort();
         /* update html to reflect any changes made to contact  */
         regenHTML();
       }
     else{
        /* push new record to array */
        myDatabase.push([nameValue,Array.from(formObj)]);
+
+       /* sort database array alphabetically     */
+       
+       alphaSort();
 
        /* now clear form fields for new entry to be entered        */
 
@@ -441,34 +474,6 @@ fbtn1Ref.addEventListener('click',(e)=>{
 
 
 
-/****************************************************************************/
-/*                                                                          */
-/*        Event listener for contact screen view/delete mode div            */
-/*                                                                          */
-/****************************************************************************/
-
-/*viewMode_divRef.addEventListener('click',()=>{
-
-/* if clicked toggle state between view and delete mode setting flags */
-/*   console.log("i'm clicked");
-  if (viewMode){
-       /*set style of button via toggle of class */
-
-/*       viewMode_divRef.classList.toggle("deleteToggle");
-       viewMode_divRef.textContent="Delete Mode";
-       viewMode=false;   /* indicates now in delete mode */
-  /*}
-  else{
-
-       /*set style of button via toggle of class */
-
-/*       viewMode_divRef.classList.toggle("deleteToggle");
-       viewMode_divRef.textContent="View Mode";
-       viewMode=true;   /* indicates now in delete mode */
-
-/*  };
-
-  });
 
 
 /*   on entry to script update label to indicate number of contacts */
