@@ -38,7 +38,7 @@ const new_contact_pageRef=document.querySelector("#new_contact_container");
 const view_contacts_pageRef=document.querySelector("#view_contacts_container");
 const contacts_dynamicDiv=document.querySelector("#contact_divs_container");
 const titleHdrRef=document.querySelector("#maintitle");
-const viewMode_divRef=document.querySelector("#deletediv");
+const viewMode_divRef=document.querySelector("#deleteDiv");
 
 const view_Contactsdiv=document.querySelector("#view_contacts");
 const savedContactsHdr=document.querySelector("#savedContactsHdr");
@@ -52,6 +52,44 @@ const mainForm=document.querySelector("#newContact");
 
 
 
+/*****************************************************************************/
+/*                                                                           */
+/*        General functions for use with event listeners                     */
+/*                                                                           */
+/*****************************************************************************/
+
+function copyArrayData(direction,dbIndex){
+
+
+  if (direction==='fromDatabase'){ 
+
+    mainForm.elements['contactName'].value=myDatabase[dbIndex][1][0][1];
+    mainForm.elements['mobile'].value=myDatabase[dbIndex][1][1][1];
+    mainForm.elements['landline'].value=myDatabase[dbIndex][1][2][1];
+    mainForm.elements['email1'].value=myDatabase[dbIndex][1][3][1];
+    mainForm.elements['email2'].value=myDatabase[dbIndex][1][4][1];
+    mainForm.elements['linkedin'].value=myDatabase[dbIndex][1][5][1];
+    mainForm.elements['facebook'].value=myDatabase[dbIndex][1][6][1];
+    mainForm.elements['birthday'].value=myDatabase[dbIndex][1][7][1];
+
+
+  }
+  else if(direction==='toDatabase'){
+
+    myDatabase[dbIndex][1][0][1]=mainForm.elements['contactName'].value;
+    myDatabase[dbIndex][1][1][1]=mainForm.elements['mobile'].value;
+    myDatabase[dbIndex][1][2][1]=mainForm.elements['landline'].value;
+    myDatabase[dbIndex][1][3][1]=mainForm.elements['email1'].value;
+    myDatabase[dbIndex][1][4][1]=mainForm.elements['email2'].value;
+    myDatabase[dbIndex][1][5][1]=mainForm.elements['linkedin'].value;
+    myDatabase[dbIndex][1][6][1]=mainForm.elements['facebook'].value;
+    myDatabase[dbIndex][1][7][1]=mainForm.elements['birthday'].value;
+
+    /* update copy of local storage when database written */
+  }
+
+  
+}
 
 
 /****************************************************************************/
@@ -61,7 +99,10 @@ const mainForm=document.querySelector("#newContact");
 /****************************************************************************/
 
 
-titleHdrRef.addEventListener('click',()=>{
+titleHdrRef.addEventListener('click',(e)=>{
+
+  console.log("titleheadref");  /* id marker for testing */
+  console.log(e.target.getAttribute('id'));
 
   if (pageID=="view"){
        console.log(new_contact_pageRef.classlist,main_pageRef.classlist);
@@ -91,8 +132,12 @@ titleHdrRef.addEventListener('click',()=>{
 /* add event listener for main screen div click "add new contact" */
 
 
-newItemRef.addEventListener("click",(event)=>{
-    console.log(event.target.getAttribute('id'));
+newItemRef.addEventListener('click',(e)=>{
+
+  console.log("newitemref");  /* id marker for testing */
+  console.log(e.target.getAttribute('id'));
+
+    console.log(e.target.getAttribute('id'));
     main_pageRef.classList.add("hide_page1");
     console.log(main_pageRef.classList);
     console.log(new_contact_pageRef);    
@@ -118,7 +163,11 @@ else
 /*                                                                          */
 /****************************************************************************/
 
-view_Contactsdiv.addEventListener('click',()=>{
+view_Contactsdiv.addEventListener('click',(e)=>{
+
+  console.log("contactdivsref");  /* id marker for testing */
+  console.log(e.target.getAttribute('id'));
+
     main_pageRef.classList.add("hide_page1");
     view_contacts_pageRef.classList.add("show_page3");
     pageID="contact";
@@ -170,7 +219,34 @@ view_Contactsdiv.addEventListener('click',()=>{
 
     view_contacts_pageRef.addEventListener('click',(e)=>{
 
+      console.log("view_contacts");  /* id marker for testing */
+      console.log(e.target.getAttribute('id'));
+
         targetID=e.target.getAttribute('id');
+        if((targetID==='deleteDiv')||(targetID==='deleteHeader')){
+          console.log("triggered by div click");
+
+      /*this event listener catches all child events of contacts div container*/
+
+         if (viewMode){
+           /*set style of button via toggle of class */
+ 
+            viewMode_divRef.classList.toggle("deleteToggle");
+            viewMode_divRef.textContent="Delete Mode";
+            viewMode=false;   /* indicates now in delete mode */
+         }
+         else{
+ 
+          /*set style of button via toggle of class */
+ 
+           viewMode_divRef.classList.toggle("deleteToggle");
+           viewMode_divRef.textContent="View Mode";
+           viewMode=true;   /* indicates now in delete mode */          
+
+
+          };
+        }
+        else{
         targetID=targetID.replace(/A/g,'');
         
         /* set values for form ready for viewing and editing */
@@ -190,6 +266,7 @@ view_Contactsdiv.addEventListener('click',()=>{
         arrivingFromContacts=true;
         pageID="view";
         /*console.log(myDatabase[targetID][1]);*/
+        }
     });
     
     
@@ -202,11 +279,14 @@ view_Contactsdiv.addEventListener('click',()=>{
 /*                                                                          */
 /****************************************************************************/
 
-fbtn2Ref.addEventListener("click",()=>{
+fbtn2Ref.addEventListener('click',(e)=>{
 
     /*  validate form data alert if errors */
 
     /* now fill data object and push to local array */
+
+    console.log("btn2ref");  /* id marker for testing */
+    console.log(e.target.getAttribute('id'));
 
     let formObj=new FormData(mainForm);
     nameValue=formObj.get('name');
@@ -239,7 +319,11 @@ fbtn2Ref.addEventListener("click",()=>{
 /*                                                                          */
 /****************************************************************************/
 
-fbtn1Ref.addEventListener('click',()=>{
+fbtn1Ref.addEventListener('click',(e)=>{
+
+  console.log("btn1ref");  /* id marker for testing */
+  console.log(e.target.getAttribute('id'));
+
   if(arrivingFromMain){
    new_contact_pageRef.classList.remove("show_page2");
    main_pageRef.classList.remove("hide_page1");
@@ -262,26 +346,26 @@ fbtn1Ref.addEventListener('click',()=>{
 /*                                                                          */
 /****************************************************************************/
 
-viewMode_divRef.addEventListener('click',()=>{
+/*viewMode_divRef.addEventListener('click',()=>{
 
 /* if clicked toggle state between view and delete mode setting flags */
-
+/*   console.log("i'm clicked");
   if (viewMode){
        /*set style of button via toggle of class */
 
-       viewMode_divRef.classList.toggle("deleteToggle");
+/*       viewMode_divRef.classList.toggle("deleteToggle");
        viewMode_divRef.textContent="Delete Mode";
        viewMode=false;   /* indicates now in delete mode */
-  }
+  /*}
   else{
 
        /*set style of button via toggle of class */
 
-       viewMode_divRef.classList.toggle("deleteToggle");
+/*       viewMode_divRef.classList.toggle("deleteToggle");
        viewMode_divRef.textContent="View Mode";
        viewMode=true;   /* indicates now in delete mode */
 
-  };
+/*  };
 
   });
 
