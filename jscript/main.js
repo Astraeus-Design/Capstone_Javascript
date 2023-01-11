@@ -30,6 +30,8 @@ let arrivingFromContacts=false; /* as per variable above */
 let viewMode=true;              /* used to determine view or delete mode */
 let pageID="main";             /* used to allow main header as back button */
 let refIndex=0;                /* for use in saving a viewed contact */
+let firstTimeVisit=true;       /* used to indicate when first visit contacts */
+
 
 /* Define constants referencing DOM nodes */
 
@@ -153,6 +155,90 @@ function clearFormfields(){
 };
 
 
+/*****************************************************************************/
+/*                                                                           */
+/*       Function to act as callback for contact form divs                   */
+/*                                                                           */
+/*****************************************************************************/
+
+function contactDivClick(e){
+
+  console.log("view_contacts");  /* id marker for testing */
+  console.log(e.target.getAttribute('id'));
+
+    targetID=e.target.getAttribute('id');
+    if((targetID==='deleteDiv')||(targetID==='deleteHeader')){
+      console.log("triggered by div click");
+
+  /*this event listener catches all child events of contacts div container*/
+
+     deletehdr=document.querySelector("#deleteHeader");
+
+     if (viewMode){
+       /*set style of button via toggle of class */
+        console.log("in true");
+        viewMode_divRef.classList.toggle("deleteToggle");
+        deletehdr.textContent="Delete Mode";
+        viewMode=false;   /* indicates now in delete mode */
+     }
+     else{
+
+      /*set style of button via toggle of class */
+       console.log("in false");
+       viewMode_divRef.classList.toggle("deleteToggle");
+       deletehdr.textContent="View Mode";
+       viewMode=true;   /* indicates now in delete mode */          
+
+
+      };
+
+     }
+     else{
+        targetID=targetID.replace(/A/g,'');
+    
+        /* set values for form ready for viewing and editing */
+        if (viewMode){
+
+       /* if we are in view mode then show contact for viewing/editing */
+    
+           copyArrayData('fromDatabase',targetID);
+/*        
+    mainForm.elements['contactName'].value=myDatabase[targetID][1][0][1];
+    mainForm.elements['mobile'].value=myDatabase[targetID][1][1][1];
+    mainForm.elements['landline'].value=myDatabase[targetID][1][2][1];
+    mainForm.elements['email1'].value=myDatabase[targetID][1][3][1];
+    mainForm.elements['email2'].value=myDatabase[targetID][1][4][1];
+    mainForm.elements['linkedin'].value=myDatabase[targetID][1][5][1];
+    mainForm.elements['facebook'].value=myDatabase[targetID][1][6][1];
+    mainForm.elements['birthday'].value=myDatabase[targetID][1][7][1];
+*/        
+          console.log(view_contacts_pageRef.classList,new_contact_pageRef.classList);
+          view_contacts_pageRef.classList.remove("show_page3");
+          new_contact_pageRef.classList.add("show_page2");
+          arrivingFromContacts=true;
+          pageID="view";
+          refIndex=targetID;  /* use seperate global to indicate record to save in view screen */
+          /*console.log(myDatabase[targetID][1]);*/
+      }
+      else{
+
+         /*  request to delete contact record               */
+         if (confirm(`Do you want to delete ${myDatabase[targetID][0]}?`)){
+
+            /* remove contact record and update local storage also
+               regenerate html for contacts page */
+
+            myDatabase.splice(targetID,1);
+            localStorage.setItem("myDatabase", JSON.stringify(myDatabase)); 
+            savedContactsHdr.textContent=`View Contacts(${myDatabase.length})`;
+            regenHTML();
+        
+            
+         };
+      };
+    };
+  }
+
 /****************************************************************************/
 /*                                                                          */
 /*  Event listener for main header div to act as back button                */
@@ -244,25 +330,7 @@ view_Contactsdiv.addEventListener('click',(e)=>{
 
     regenHTML();
 
-   /*
-   divString=``;
-
-   myDatabase.forEach((element,index) => {
-           divID="A"+index;
-           nameValue=element[0];
-           console.log(divID,nameValue);
-
-          /* create a template string for use in dynamic html creation */
-
-          /*          htmlString=`<div class="contactDiv" id="${divID}"><h3 class="nameString">${nameValue}</h3></div>`;*/
-    /*       htmlString=`<div class="contactDiv" id="${divID}"><h3 id="A${divID}">${nameValue}</h3></div>`;
-
-           console.log(htmlString);
-           divString=divString+htmlString;
-       });
-    
-    contacts_dynamicDiv.innerHTML="";
-    contacts_dynamicDiv.insertAdjacentHTML("afterbegin",divString);*/
+   
 
     /* now iterate through all create and inserted divs and attach listener */
 
@@ -275,98 +343,19 @@ view_Contactsdiv.addEventListener('click',(e)=>{
         tempRef.addEventListener('click',(e)=>{
             alert(e.target.getAttribute('id')+str)
         
-        
-        
-        
-        
-        
-        
-        });*/
+    
+      });*/
 
     
 
 
-    /* add a listener to parent div to catch all click events */
+    /* add a listener to parent div to catch all click events, assign once */
     
-
-     view_contacts_pageRef.addEventListener('click',(e)=>{
-
-      console.log("view_contacts");  /* id marker for testing */
-      console.log(e.target.getAttribute('id'));
-
-        targetID=e.target.getAttribute('id');
-        if((targetID==='deleteDiv')||(targetID==='deleteHeader')){
-          console.log("triggered by div click");
-
-      /*this event listener catches all child events of contacts div container*/
-
-         deletehdr=document.querySelector("#deleteHeader");
-
-         if (viewMode){
-           /*set style of button via toggle of class */
-            console.log("in true");
-            viewMode_divRef.classList.toggle("deleteToggle");
-            deletehdr.textContent="Delete Mode";
-            viewMode=false;   /* indicates now in delete mode */
-         }
-         else{
- 
-          /*set style of button via toggle of class */
-           console.log("in false");
-           viewMode_divRef.classList.toggle("deleteToggle");
-           deletehdr.textContent="View Mode";
-           viewMode=true;   /* indicates now in delete mode */          
-
-
-          };
-
-         }
-         else{
-            targetID=targetID.replace(/A/g,'');
-        
-            /* set values for form ready for viewing and editing */
-            if (viewMode){
-
-           /* if we are in view mode then show contact for viewing/editing */
-        
-               copyArrayData('fromDatabase',targetID);
-/*        
-        mainForm.elements['contactName'].value=myDatabase[targetID][1][0][1];
-        mainForm.elements['mobile'].value=myDatabase[targetID][1][1][1];
-        mainForm.elements['landline'].value=myDatabase[targetID][1][2][1];
-        mainForm.elements['email1'].value=myDatabase[targetID][1][3][1];
-        mainForm.elements['email2'].value=myDatabase[targetID][1][4][1];
-        mainForm.elements['linkedin'].value=myDatabase[targetID][1][5][1];
-        mainForm.elements['facebook'].value=myDatabase[targetID][1][6][1];
-        mainForm.elements['birthday'].value=myDatabase[targetID][1][7][1];
-*/        
-              console.log(view_contacts_pageRef.classList,new_contact_pageRef.classList);
-              view_contacts_pageRef.classList.remove("show_page3");
-              new_contact_pageRef.classList.add("show_page2");
-              arrivingFromContacts=true;
-              pageID="view";
-              refIndex=targetID;  /* use seperate global to indicate record to save in view screen */
-              /*console.log(myDatabase[targetID][1]);*/
-          }
-          else{
-
-             /*  request to delete contact record               */
-             if (confirm(`Do you want to delete ${myDatabase[targetID][0]}?`)){
-
-                /* remove contact record and update local storage also
-                   regenerate html for contacts page */
-
-                myDatabase.splice(targetID,1);
-                localStorage.setItem("myDatabase", JSON.stringify(myDatabase)); 
-                savedContactsHdr.textContent=`View Contacts(${myDatabase.length})`;
-                regenHTML();
-            
-                
-             };
-          };
-        };
-      });    /* end of inner listener assignment */ 
-    
+     if ( firstTimeVisit)
+     {
+       view_contacts_pageRef.addEventListener('click',contactDivClick);    /*  end of listener assignment */
+       firstTimeVisit=false; 
+     }
 });
 
 
