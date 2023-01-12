@@ -341,6 +341,13 @@ form>div{
 
 /* test of variable font media queries */
 
+@media screen and (max-width:391px){
+
+    html{
+        font-size: 0.4rem;
+    }
+}
+
 @media screen and (min-width:392px){
 
     html{
@@ -356,7 +363,7 @@ form>div{
     }
 }
 
-
+/*
 @media screen and (min-width: 900px){
 
     html{
@@ -364,9 +371,14 @@ form>div{
     }
 
 }
-
+*/
 
 @media screen and (min-width: 1000px){
+    
+    html{
+        font-size:1rem;
+
+    }
 
     #newContact{
 
