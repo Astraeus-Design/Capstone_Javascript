@@ -91,15 +91,18 @@ body{
 
 .newItem{
     width:70%;
+    max-width:900px;
    /* max-height:500px;
     overflow:auto;*/
     font-weight: bold;
-    background-color: grey;
+    background-color: gainsboro;
     padding:1rem;
     border: 1px solid white;
     border-radius:10px;
     text-align: center;
     margin: 15px auto;
+    box-shadow: inset 0px 0px 26px -4px rgba(0,0,0,0.58);    
+    opacity:90%;
     /*display:none; */ 
     /*max-height: 50vh;*/ 
 }
@@ -109,7 +112,7 @@ body{
     font-size:1.5rem;
     background-color: #e4feeb;
     /*border: 1px solid black;*/
-    border-radius: 3px;
+    border-radius: 5px;
     width:55%;
     text-align: center;
     vertical-align: middle;
@@ -127,10 +130,10 @@ body{
     width:70%;
     max-width: 900px;
     background-color: gainsboro;
-    margin-top: 10px;
+    margin-top: 15px;
     margin-bottom:10px;
     width:70%; /*overide previous width */
-    
+    opacity:90%;
 }
 
 .deleteDiv:hover{
@@ -139,15 +142,16 @@ body{
 }
 
 .deleteToggle{
-    background-color: palevioletred;
+    background-color: rgb(245, 115, 158);
 }
 
 /* grid set up for main form */
 
 #newContact{
     display:grid;
-    
+    gap:5px;
     width:100%;
+    max-width:900px;
     grid-template-areas: "a b b b"
                         "c d d d"
                         "e f f f"
@@ -227,20 +231,41 @@ body{
     grid-area: p;
 }
 
+/*
+#l1,#l2,#l3,#l4,#l5,#l6,#l7,#l8{
+    backgrou
+}*/
+
 #fbtn1{
+    font-size:larger;
     grid-area: q;
     text-align: center;
-    background-color: greenyellow;
-    border: 1px solid black;
-    border-radius: 3px;
+    background-color:#e4feeb;
+    /*border: 1px solid black;*/
+    border-radius: 5px;
+    margin-top: 5px;
+    margin-right: 5px;
+    padding:0.5rem;
+    opacity:90%;
+    box-shadow: inset 0px 0px 26px -4px rgba(0,0,0,0.58);
 }
 
 #fbtn2{
+    font-size: larger;
     grid-area: r;
     text-align: center;
-    background-color: powderblue;
-    border: 1px solid black;
-    border-radius: 3px;
+    background-color:#e9c9e4;
+    /*border: 1px solid black;*/
+    border-radius: 5px;
+    margin-top:5px;
+    margin-left: 5px;
+    padding:0.5rem;
+    opacity:90%;
+    box-shadow: inset 0px 0px 26px -4px rgba(0,0,0,0.58);
+}
+
+#fbtn1:hover,#fbtn2:hover{
+    box-shadow: inset 0px 0px 26px -4px rgba(0,0,0,0.95);
 }
 
 
@@ -248,10 +273,13 @@ input{
     font-size: 1rem;
     width:15rem;
     padding:0.5rem;
-    border: 1px solid black;
-    border-radius:3px;
+    /*border: 1px solid black;*/
+    border-radius:5px;
     margin: 0 0 3px 1rem;
-    background-color: blanchedalmond;
+    background-color: rgb(236, 230, 230);
+    box-shadow: inset 0px 0px 26px -4px rgba(0,0,0,0.58);
+    opacity:90%;
+
 }
 
 label{
