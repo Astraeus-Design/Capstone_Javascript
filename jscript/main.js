@@ -31,6 +31,10 @@ let viewMode=true;              /* used to determine view or delete mode */
 let pageID="main";             /* used to allow main header as back button */
 let refIndex=0;                /* for use in saving a viewed contact */
 let firstTimeVisit=true;       /* used to indicate when first visit contacts */
+let timerRef;                  /* used to set and cancel general timer */
+let mouseoverID="";            /* used to detect mouseover div identity */
+let mouseoutID="";
+let timerIDs=[];               /* keep reference array of timers to cancel */
 
 
 /* Define constants referencing DOM nodes */
@@ -95,7 +99,7 @@ function copyArrayData(direction,dbIndex){
     /* copy name field into first field of array, used for sorting */
     myDatabase[dbIndex][0]=mainForm.elements['contactName'].value;
 
-    /* update copy of local storage when database written */
+    
   };
 
   
@@ -121,10 +125,10 @@ function regenHTML(){
 
          /*          htmlString=`<div class="contactDiv" id="${divID}"><h3 class="nameString">${nameValue}</h3></div>`;*/
           if (index & 0x01){
-          htmlString=`<div class="contactDiv oddDiv" id="${divID}"><h3 id="A${divID}">${nameValue}</h3></div>`;
+          htmlString=`<div class="contactDiv oddDiv" id="${divID}"><h3 class="contactH3" id="A${divID}">${nameValue}</h3></div>`;
           }
           else{
-            htmlString=`<div class="contactDiv evenDiv" id="${divID}"><h3 id="A${divID}">${nameValue}</h3></div>`;           
+            htmlString=`<div class="contactDiv evenDiv" id="${divID}"><h3 class="contactH3" id="A${divID}">${nameValue}</h3></div>`;           
           };
 
           console.log(htmlString);
@@ -165,6 +169,8 @@ function contactDivClick(e){
 
   console.log("view_contacts");  /* id marker for testing */
   console.log(e.target.getAttribute('id'));
+  tempRef=e.target.classList;
+  console.log(e.target.classList);
 
     targetID=e.target.getAttribute('id');
     if((targetID==='deleteDiv')||(targetID==='deleteHeader')){
@@ -193,7 +199,7 @@ function contactDivClick(e){
       };
 
      }
-     else{
+     else if(tempRef.contains('contactDiv')||tempRef.contains('contactH3')){
         targetID=targetID.replace(/A/g,'');
     
         /* set values for form ready for viewing and editing */
@@ -264,6 +270,71 @@ function alphaSort(){
   });
 
 };
+
+
+/****************************************************************************/
+/*                                                                          */
+/*                 Function to handle mouseover event                       */
+/*                                                                          */
+/****************************************************************************/
+
+function mouseover(e){
+    /*console.log(e.target.classList);*/
+    /*if (e.target.classList.contains('contactDiv')){*/
+        
+        mouseoverID=e.target.getAttribute('id');
+        mouseoverID=mouseoverID.replace(/A/g,'');
+        /*console.log(mouseoverID,timerIDs[mouseoverID]);*/
+        timerIDs[mouseoverID]=setTimeout(displayFloatDiv,2500);
+        console.log( "mouseover setting timer ",timerIDs[mouseoverID]);
+   /* }*/
+
+
+};
+
+/****************************************************************************/
+/*                                                                          */
+/*                Function to handle mouse out event                        */
+/*                                                                          */
+/****************************************************************************/
+
+function mouseout(e){
+
+    /* cancel timer   */
+
+    /*console.log(e.target.classList);*/
+
+    /*if (e.target.classList.contains('contactDiv')){*/
+        
+        mouseoutID=e.target.getAttribute('id');
+        mouseoutID=mouseoutID.replace(/A/g,'');
+        /*console.log(mouseoverID,timerIDs[mouseoverID]);*/
+        console.log("mouseout clearing timer ",timerIDs[mouseoverID]);
+        if (mouseoutID===mouseoverID) clearTimeout(timerIDs[mouseoverID]);
+    /*}*/
+
+    /*console.log("mouseout");*/
+    
+    
+
+
+};
+
+
+/****************************************************************************/
+/*                                                                          */
+/*                Function to Create and display a floated div              */
+/*                for use displaying contact details                        */
+/*                                                                          */
+/****************************************************************************/
+
+function displayFloatDiv(){
+  console.log(mouseoverID);
+  console.log(myDatabase[mouseoverID]);
+  console.log("floating div is ",mouseoverID);
+  
+};
+
 
 
 
@@ -379,9 +450,19 @@ view_Contactsdiv.addEventListener('click',(e)=>{
 
     /* add a listener to parent div to catch all click events, assign once */
     
-     if ( firstTimeVisit)
+     if ( firstTimeVisit)  
      {
-       view_contacts_pageRef.addEventListener('click',contactDivClick);    /*  end of listener assignment */
+       view_contacts_pageRef.addEventListener('click',contactDivClick);
+
+      /*now listener is assigned add a listener for mouseover and mouseout events */ /* future work in progress */
+ /*      const contactDivref=document.querySelectorAll(".contactDiv");
+       console.log(contactDivref);
+       for( z in contactDivref){
+              document.querySelector(z.getAttribute('id').addEventListener('mouseover',mouseover));
+              document.querySelector(z.getAttribute('id').addEventListener('mouseout',mouseout));
+              return;
+        }*/
+       
        firstTimeVisit=false; 
      }
 });
@@ -406,14 +487,19 @@ fbtn2Ref.addEventListener('click',(e)=>{
     nameValue=formObj.get('name');
     console.log(nameValue);
 
-    if (arrivingFromContacts){
+    if (nameValue===''){
+
+        alert("Contact name required");
+    }
+    else{
+      if (arrivingFromContacts){
         /* overwrite current array data with any edited values */
         copyArrayData('toDatabase',refIndex); 
         alphaSort();
         /* update html to reflect any changes made to contact  */
         regenHTML();
       }
-    else{
+     else{
        /* push new record to array */
        myDatabase.push([nameValue,Array.from(formObj)]);
 
@@ -425,22 +511,22 @@ fbtn2Ref.addEventListener('click',(e)=>{
 
        clearFormfields();
 
-     };
+      };
 
-    /* update local storage copy and screen contact count indicator */
-    localStorage.setItem("myDatabase", JSON.stringify(myDatabase)); 
-    savedContactsHdr.textContent=`View Contacts(${myDatabase.length})`;
+      /* update local storage copy and screen contact count indicator */
+      localStorage.setItem("myDatabase", JSON.stringify(myDatabase)); 
+      savedContactsHdr.textContent=`View Contacts(${myDatabase.length})`;
 
-    /* if we have arrived from contacts page then return after saving data */
+      /* if we have arrived from contacts page then return after saving data */
     
-    if (arrivingFromContacts){
-      new_contact_pageRef.classList.remove("show_page2");
-      view_contacts_pageRef.classList.add("show_page3");
-      arrivingFromContacts=false;
-      pageID="contact";
+      if (arrivingFromContacts){
+       new_contact_pageRef.classList.remove("show_page2");
+       view_contacts_pageRef.classList.add("show_page3");
+       arrivingFromContacts=false;
+       pageID="contact";
 
+      }
     }
-    
 
     
 });
