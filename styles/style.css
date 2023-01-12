@@ -65,7 +65,7 @@ body{
     text-align: center;
     margin: 0.5rem auto;
     box-shadow: inset 0px 0px 26px -4px rgba(0,0,0,0.58);
-
+    opacity:90%;
 }
 
 .subheaders:hover{
