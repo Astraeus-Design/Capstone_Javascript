@@ -1,3 +1,10 @@
+/******************************************************************************/
+/*                                                                            */
+/*         Styles for JS Capstone:12/01/23- Author M.Foster                   */
+/*                                                                            */
+/******************************************************************************/
+
+/* styles for global, html and body  */
 *{
     box-sizing: border-box;
     margin:0;
@@ -7,8 +14,9 @@
 
 html{
     
-  /*  font-size: calc((100vw/320)*4);*/
-    /*font-size: calc((100vh/320)*4);*/
+  /*  font-size: calc((100vw/320)*4);*/ /* experiment to create formula for */
+    /*font-size: calc((100vh/320)*4);*/ /* smooth font scaling with page size */
+
     font-size: 0.55rem;
     min-height:100vh;
     background-image: url("../images/coffee-cup-laptop-eyeglasses-spiral-notepad-leaves-white-desk_23-2148178627.webp");
@@ -23,6 +31,8 @@ body{
     flex-direction:column;
     justify-content: space-between;
 }
+
+/* styles for main page menu div's */
 
 .main_page_container{
     display:flex;
@@ -73,6 +83,8 @@ body{
      
 }
 
+/* styles for outer containers of new contact page, generally widths and max-heghts */
+
 .new_contact_container{
     display:none;
 }
@@ -108,6 +120,8 @@ body{
     /*max-height: 50vh;*/ 
 }
 
+/* styles for contact divs of contact page, the JS generated divs */
+
 .contactDiv, .deleteDiv{
     width:60%;
     max-width: 750px;
@@ -129,6 +143,8 @@ body{
     box-shadow: inset 0px 0px 26px -4px rgba(0,0,0,0.95); 
 }
 
+/* styles for view/delete bar of contacts screen */
+
 .deleteDiv{
     width:70%;
     max-width: 900px;
@@ -148,7 +164,7 @@ body{
     background-color: rgb(245, 115, 158);
 }
 
-/* grid set up for main form */
+/* grid set up for main form ( changes with media query at 1000px upward ) */
 
 #newContact{
     display:grid;
@@ -234,10 +250,7 @@ body{
     grid-area: p;
 }
 
-/*
-#l1,#l2,#l3,#l4,#l5,#l6,#l7,#l8{
-    backgrou
-}*/
+/*  styles for the Return and Save buttons of contact edit screen */
 
 #fbtn1{
     font-size:larger;
@@ -271,6 +284,7 @@ body{
     box-shadow: inset 0px 0px 26px -4px rgba(0,0,0,0.95);
 }
 
+/* style used for form fields */
 
 input{
     font-size: 1rem;
@@ -296,11 +310,9 @@ form>div{
     display:flex;
     justify-content: center;
 }
-/*
-#newItemDiv{
-    display:none;
-}
-*/
+
+
+/* general styles for hiding or showing divs */
 
 .hide_page1{
     display:none;
@@ -341,14 +353,25 @@ form>div{
 
 /* test of variable font media queries */
 
-@media screen and (max-width:391px){
+@media screen and (max-width:230px){     /* very small device!! */
+
+    html{
+        font-size: 0.3rem;
+        
+    }
+
+    input{
+        width:10rem;
+    }
+}
+@media screen and (max-width:391px){  /* mobile up to small smartphone */
 
     html{
         font-size: 0.4rem;
     }
 }
 
-@media screen and (min-width:392px){
+@media screen and (min-width:392px){ /* medium smartphone */
 
     html{
         font-size: 0.6rem;
@@ -356,7 +379,7 @@ form>div{
 }
 
 
-@media screen and (min-width: 590px){
+@media screen and (min-width: 590px){  /* small tablet */
 
     html{
         font-size: 0.8rem;
@@ -373,7 +396,7 @@ form>div{
 }
 */
 
-@media screen and (min-width: 1000px){
+@media screen and (min-width: 1000px){   /* medium tablet to full PC */
     
     html{
         font-size:1rem;

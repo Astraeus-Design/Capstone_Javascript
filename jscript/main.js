@@ -1,5 +1,5 @@
 /* optionally stop use of back button in order to maintain javascript 
-   variable states limiting application use to buttons */
+   variable states and limiting application use to defined buttons */
 
 /*
         function disableBack() { window.history.forward(); }
@@ -7,24 +7,24 @@
         window.onunload = function () { null };
 */
 
-
-
-/* general variables */
-
+/***************************************************************************/
+/*                                                                         */
+/*                             general variables                           */
+/*                                                                         */
+/***************************************************************************/
 
 /* special attention to myDatabase which is stored in local storage of the browser and has to be accessed via a stringify method  */
 
 let myDatabase=[];  /* load as empty array if not currently in existence */
 myDatabase = JSON.parse(localStorage.getItem("myDatabase") || "[]");
 
-/* line to be used when storing updates to myDatabase
-localStorage.setItem("myDatabase", JSON.stringify(myDatabase));  */
 
-let itemNumber;
-let addClickCount=0;
-let dataObj=Object.create(Object.prototype);
-let nameValue="";
-let divID="";
+
+let itemNumber;                             /* used with array referencing */
+let addClickCount=0;                        /* general counter for testing */
+let dataObj=Object.create(Object.prototype);/* a base object for use with DB */
+let nameValue="";                           /* used for display purposes */
+let divID="";                               /* used in html generation */
 let arrivingFromMain=false;    /* used to determine operation mode of screen */
 let arrivingFromContacts=false; /* as per variable above */
 let viewMode=true;              /* used to determine view or delete mode */
@@ -37,7 +37,7 @@ let mouseoutID="";
 let timerIDs=[];               /* keep reference array of timers to cancel */
 
 
-/* Define constants referencing DOM nodes */
+/* Define constants referencing DOM nodes classes and ID's from index.html */
 
 const main_pageRef=document.querySelector("#main_page_container");
 const new_contact_pageRef=document.querySelector("#new_contact_container");
@@ -96,7 +96,9 @@ function copyArrayData(direction,dbIndex){
     myDatabase[dbIndex][1][5][1]=mainForm.elements['linkedin'].value;
     myDatabase[dbIndex][1][6][1]=mainForm.elements['facebook'].value;
     myDatabase[dbIndex][1][7][1]=mainForm.elements['birthday'].value;
-    /* copy name field into first field of array, used for sorting */
+
+    /* copy name field into first field of array for alphabetical sorting */
+
     myDatabase[dbIndex][0]=mainForm.elements['contactName'].value;
 
     
@@ -116,14 +118,12 @@ function regenHTML(){
   
   divString=``;
 
-  myDatabase.forEach((element,index) => {
+      myDatabase.forEach((element,index) => {
           divID="A"+index;
           nameValue=element[0];
           console.log(divID,nameValue);
 
-         /* create a template string for use in dynamic html creation */
 
-         /*          htmlString=`<div class="contactDiv" id="${divID}"><h3 class="nameString">${nameValue}</h3></div>`;*/
           if (index & 0x01){
           htmlString=`<div class="contactDiv oddDiv" id="${divID}"><h3 class="contactH3" id="A${divID}">${nameValue}</h3></div>`;
           }
@@ -167,16 +167,18 @@ function clearFormfields(){
 
 function contactDivClick(e){
 
+/*this event listener catches all child events of contacts div container*/
+
   console.log("view_contacts");  /* id marker for testing */
   console.log(e.target.getAttribute('id'));
   tempRef=e.target.classList;
   console.log(e.target.classList);
 
-    targetID=e.target.getAttribute('id');
-    if((targetID==='deleteDiv')||(targetID==='deleteHeader')){
+  targetID=e.target.getAttribute('id');  
+  if((targetID==='deleteDiv')||(targetID==='deleteHeader')){
       console.log("triggered by div click");
 
-  /*this event listener catches all child events of contacts div container*/
+     /* this section handles the view/delete mode bar on contacts page */ 
 
      deletehdr=document.querySelector("#deleteHeader");
 
@@ -193,7 +195,7 @@ function contactDivClick(e){
        console.log("in false");
        viewMode_divRef.classList.toggle("deleteToggle");
        deletehdr.textContent="View Mode";
-       viewMode=true;   /* indicates now in delete mode */          
+       viewMode=true;   /* indicates now in view mode */          
 
 
       };
@@ -202,33 +204,26 @@ function contactDivClick(e){
      else if(tempRef.contains('contactDiv')||tempRef.contains('contactH3')){
         targetID=targetID.replace(/A/g,'');
     
-        /* set values for form ready for viewing and editing */
+        
+
         if (viewMode){
 
-       /* if we are in view mode then show contact for viewing/editing */
+          /* if we are in view mode then show contact for viewing/editing */
     
            copyArrayData('fromDatabase',targetID);
-/*        
-    mainForm.elements['contactName'].value=myDatabase[targetID][1][0][1];
-    mainForm.elements['mobile'].value=myDatabase[targetID][1][1][1];
-    mainForm.elements['landline'].value=myDatabase[targetID][1][2][1];
-    mainForm.elements['email1'].value=myDatabase[targetID][1][3][1];
-    mainForm.elements['email2'].value=myDatabase[targetID][1][4][1];
-    mainForm.elements['linkedin'].value=myDatabase[targetID][1][5][1];
-    mainForm.elements['facebook'].value=myDatabase[targetID][1][6][1];
-    mainForm.elements['birthday'].value=myDatabase[targetID][1][7][1];
-*/        
+
           console.log(view_contacts_pageRef.classList,new_contact_pageRef.classList);
           view_contacts_pageRef.classList.remove("show_page3");
           new_contact_pageRef.classList.add("show_page2");
           arrivingFromContacts=true;
           pageID="view";
-          refIndex=targetID;  /* use seperate global to indicate record to save in view screen */
-          /*console.log(myDatabase[targetID][1]);*/
+          refIndex=targetID;  /* use separate global to indicate record to save in view screen */
+          
       }
       else{
 
-         /*  request to delete contact record               */
+         /*  request to delete contact record */
+
          if (confirm(`Do you want to delete ${myDatabase[targetID][0]}?`)){
 
             /* remove contact record and update local storage also
@@ -255,7 +250,7 @@ function contactDivClick(e){
 /****************************************************************************/
 
 
-function alphaSort(){ 
+function alphaSort(){        /* this is in effect a bubble sort */
 
    myDatabase.sort((a,b)=>{
      if (a[0]>b[0]){
@@ -274,7 +269,7 @@ function alphaSort(){
 
 /****************************************************************************/
 /*                                                                          */
-/*                 Function to handle mouseover event                       */
+/*                 Function to handle mouseover event(experimental!!)       */
 /*                                                                          */
 /****************************************************************************/
 
@@ -294,7 +289,7 @@ function mouseover(e){
 
 /****************************************************************************/
 /*                                                                          */
-/*                Function to handle mouse out event                        */
+/*                Function to handle mouse out event(experimental!!)        */
 /*                                                                          */
 /****************************************************************************/
 
@@ -324,7 +319,7 @@ function mouseout(e){
 /****************************************************************************/
 /*                                                                          */
 /*                Function to Create and display a floated div              */
-/*                for use displaying contact details                        */
+/*                for use displaying contact details(experimental!!)        */
 /*                                                                          */
 /****************************************************************************/
 
@@ -350,7 +345,7 @@ titleHdrRef.addEventListener('click',(e)=>{
   console.log("titleheadref");  /* id marker for testing */
   console.log(e.target.getAttribute('id'));
 
-  if (pageID=="view"){
+  if (pageID=="view"){             /* return to main page from view page */
        console.log(new_contact_pageRef.classlist,main_pageRef.classlist);
  
        new_contact_pageRef.classList.remove("show_page2");
@@ -358,7 +353,7 @@ titleHdrRef.addEventListener('click',(e)=>{
        pageID="main";
 
   }
-  else if (pageID=="contact"){
+  else if (pageID=="contact"){   /* return to main page from contacts page */
       view_contacts_pageRef.classList.remove("show_page3");
       main_pageRef.classList.remove("hide_page1");
       pageID="main";
@@ -371,18 +366,15 @@ titleHdrRef.addEventListener('click',(e)=>{
 
 /****************************************************************************/
 /*                                                                          */
-/*        Event listener for main screen new contact                        */
+/*        Event listener for main screen add new contact                    */
 /*                                                                          */
 /****************************************************************************/
 
 
-/* add event listener for main screen div click "add new contact" */
-
 
 newItemRef.addEventListener('click',(e)=>{
 
-  console.log("newitemref");  /* id marker for testing */
-  console.log(e.target.getAttribute('id'));
+    console.log("newitemref");  /* id marker for testing */
 
     console.log(e.target.getAttribute('id'));
     main_pageRef.classList.add("hide_page1");
@@ -403,14 +395,10 @@ else
 });
 
 
-/* add event listener for main page "View contacts"         */
-/* eventlistener for div click view contacts of main screen */
-
-
 
 /****************************************************************************/
 /*                                                                          */
-/*          Event listener for main screen view contacts                    */
+/*          Event listener for main screen show view contacts               */
 /*                                                                          */
 /****************************************************************************/
 
@@ -430,30 +418,13 @@ view_Contactsdiv.addEventListener('click',(e)=>{
     regenHTML();
 
    
-
-    /* now iterate through all create and inserted divs and attach listener */
-
-   /* for ( i=0; i<(myDatabase.length);i++){
-
-        divID="#A"+i;
-        tempRef=document.querySelector(divID);
-        console.log(tempRef);
-        str=divID+" clicked";
-        tempRef.addEventListener('click',(e)=>{
-            alert(e.target.getAttribute('id')+str)
-        
-    
-      });*/
-
-    
-
-
-    /* add a listener to parent div to catch all click events, assign once */
+    /* add a listener to parent div to catch all click events, assign only once */
     
      if ( firstTimeVisit)  
      {
        view_contacts_pageRef.addEventListener('click',contactDivClick);
 
+      /* this section is experimental and currently removed */
       /*now listener is assigned add a listener for mouseover and mouseout events */ /* future work in progress */
  /*      const contactDivref=document.querySelectorAll(".contactDiv");
        console.log(contactDivref);
@@ -476,9 +447,9 @@ view_Contactsdiv.addEventListener('click',(e)=>{
 
 fbtn2Ref.addEventListener('click',(e)=>{
 
-    /*  validate form data alert if errors */
+    /*  validate form data alert if errors( at present just missing name ) */
 
-    /* now fill data object and push to local array */
+    /* fill data object and push to local array */
 
     console.log("btn2ref");  /* id marker for testing */
     console.log(e.target.getAttribute('id'));
@@ -493,31 +464,35 @@ fbtn2Ref.addEventListener('click',(e)=>{
     }
     else{
       if (arrivingFromContacts){
+
         /* overwrite current array data with any edited values */
+
         copyArrayData('toDatabase',refIndex); 
         alphaSort();
+
         /* update html to reflect any changes made to contact  */
+
         regenHTML();
       }
      else{
+
        /* push new record to array */
+
        myDatabase.push([nameValue,Array.from(formObj)]);
 
-       /* sort database array alphabetically     */
+       /* sort database array alphabetically and clear form fields   */
        
        alphaSort();
-
-       /* now clear form fields for new entry to be entered        */
-
        clearFormfields();
 
       };
 
       /* update local storage copy and screen contact count indicator */
+
       localStorage.setItem("myDatabase", JSON.stringify(myDatabase)); 
       savedContactsHdr.textContent=`View Contacts(${myDatabase.length})`;
 
-      /* if we have arrived from contacts page then return after saving data */
+      /* if we have arrived from contacts page then return to contacts page after saving data */
     
       if (arrivingFromContacts){
        new_contact_pageRef.classList.remove("show_page2");
@@ -531,11 +506,10 @@ fbtn2Ref.addEventListener('click',(e)=>{
     
 });
 
-/* eventlistener for Return button of save contact screen  */
 
 /****************************************************************************/
 /*                                                                          */
-/*        Event listener for Return button of edit                          */
+/*        Event listener for Return button of contact page edit             */
 /*                                                                          */
 /****************************************************************************/
 
@@ -544,13 +518,13 @@ fbtn1Ref.addEventListener('click',(e)=>{
   console.log("btn1ref");  /* id marker for testing */
   console.log(e.target.getAttribute('id'));
 
-  if(arrivingFromMain){
+  if(arrivingFromMain){                                /* return to main page */
    new_contact_pageRef.classList.remove("show_page2");
    main_pageRef.classList.remove("hide_page1");
    arrivingFromMain=false;
    pageID="main";
   }
-  else if(arrivingFromContacts){
+  else if(arrivingFromContacts){                   /* return to contacts page */
     new_contact_pageRef.classList.remove("show_page2");
     view_contacts_pageRef.classList.add("show_page3");
     arrivingFromContacts=false;
@@ -561,8 +535,8 @@ fbtn1Ref.addEventListener('click',(e)=>{
 
 
 
-
-/*   on entry to script update label to indicate number of contacts */
+/* code that runs outside of all eventlisteners */
+/* On entry to script update label to indicate number of contacts on main page */
 
 savedContactsHdr.textContent=`View Contacts(${myDatabase.length})`;
 
